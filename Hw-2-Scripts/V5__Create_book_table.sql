@@ -1,7 +1,7 @@
 CREATE TABLE book(
 	book_id INT NOT NULL PRIMARY KEY,
 	author_id INT NOT NULL,
-	book_series_id INT NOT NULL,
+	book_series_id INT,
 	name VARCHAR(255) NOT NULL,
 	date_of_release VARCHAR(255) NOT NULL,
 	CONSTRAINT author_id FOREIGN KEY (author_id) REFERENCES author (author_id),
