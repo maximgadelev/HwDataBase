@@ -1,5 +1,5 @@
 CREATE TABLE book(
-	book_id INT NOT NULL PRIMARY KEY,
+	book_id serial PRIMARY KEY,
 	author_id INT NOT NULL,
 	book_series_id INT,
 	name VARCHAR(255) NOT NULL,
