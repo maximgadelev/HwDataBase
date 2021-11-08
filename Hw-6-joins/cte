@@ -1,0 +1,37 @@
+create table graph(
+point varchar(30),
+next_point varchar(30),
+cost int
+);
+
+insert into graph (point, next_point, cost) values ('V', 'Y', 2);
+insert into graph (point, next_point, cost) values ('Y', 'V', 7);
+insert into graph (point, next_point, cost) values ('Y', 'S', 3);
+insert into graph (point, next_point, cost) values ('S', 'X', 5);
+insert into graph (point, next_point, cost) values ('S', 'U', 3);
+insert into graph (point, next_point, cost) values ('U', 'X', 2);
+insert into graph (point, next_point, cost) values ('U', 'V', 6);
+insert into graph (point, next_point, cost) values ('X', 'U', 1);
+insert into graph (point, next_point, cost) values ('X', 'Y', 6);
+insert into graph (point, next_point, cost) values ('X', 'V', 4);
+
+WITH recursive graph_cte (next_point2, STEPS, cost1, WAY)
+AS
+(SELECT DISTINCT point, 0, 0, 'S'
+FROM graph
+WHERE point = 'S'
+UNION ALL
+SELECT next_point,
+departure.STEPS + 1,
+departure.cost1 + arrival.cost,
+departure.WAY || ', ' || arrival.next_point
+FROM graph AS arrival
+INNER JOIN graph_cte AS departure
+ON departure.next_point2 = arrival.point WHERE departure.STEPS
+ < (SELECT COUNT(DISTINCT next_point) FROM graph) and
+ (SELECT COUNT(*)  FROM regexp_matches(departure.WAY, arrival.point, 'g')) < 2),
+short (DISTANCE)
+ AS (SELECT MIN(cost1)
+ FROM graph_cte
+ WHERE   STEPS = (SELECT COUNT(DISTINCT next_point) FROM graph))
+SELECT * FROM graph_cte g where next_point2='Y' limit 1;

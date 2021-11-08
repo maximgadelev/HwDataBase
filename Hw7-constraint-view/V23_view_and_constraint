@@ -1,0 +1,26 @@
+LTER TABLE author ALTER COLUMN author_id set not null
+ALTER TABLE author ALTER COLUMN surname set not null
+ALTER TABLE author ALTER COLUMN name set not null
+--айди,имя,фамилия ненулевые(айди по дефолту еще сериал)
+
+alter table book add constraint CK_date_less_than_2021 CHECK (date_of_release::INTEGER<=2021)
+alter table book alter column name set not null
+--дата выпуска книги не больше текущего года,имя книги ненулевое.айди сериал по дефолту стоял
+
+alter table book_series alter column name set not null
+--имя серии также ненулевое.айди сериал по дефолту стоял
+
+alter table genre alter column name set not null
+--имя жанра ненулевое.айди сериал по дефолту стоял
+
+alter table reader add constraint ck_unique_login unique(login)
+alter table reader alter name set not null
+--уникальност логина пользователя,ненуловое имя .айди сериал по дефолту стоял
+
+create materialized view authors as select name,surname from author;
+select*from authors;
+--получить имена и фамилии авторов,для какого-нибудь поиска по авторам будет полезно
+
+create materialized view new_books_1 as select name,date_of_release,book_id from book where date_of_release::integer>=2021;
+select*from new_books_1;
+--получить новые книги,которые вышли в 2021 года и дальше,удобно для отображение новых книг на сайте
